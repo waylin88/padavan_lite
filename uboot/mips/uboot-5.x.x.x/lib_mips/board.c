@@ -745,6 +745,11 @@ __attribute__((nomips16)) void board_init_f(ulong bootflag)
 
 	init_func_ram(); 
 
+#if defined(CONFIG_LED_BOOT_EFFECT)
+	/* Establish the CPU frequency early so that udelay() works for the
+	 * power-on LED effect (it is normally only set up later in board_init_r). */
+	Init_System_Mode();
+#endif
 	gpio_init();
 
 	/* reset Frame Engine */
@@ -2198,7 +2203,9 @@ __attribute__((nomips16)) void board_init_r (gd_t *id, ulong dest_addr)
 	if(BootType == '3') {
 		char *argv[2];
 
+#if !defined(CONFIG_PURE_BOOT)
 		printf("   \n%d: System Boot system code via Flash.\n", 3);
+#endif
 		sprintf(addr_str, "0x%X", CFG_KERN_ADDR);
 		argv[1] = &addr_str[0];
 		
