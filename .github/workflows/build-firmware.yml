@@ -158,9 +158,12 @@ jobs:
               set -e
               export DEBIAN_FRONTEND=noninteractive
 
-              # Ubuntu 16.04 已进入 EOL，切换到 old-releases 源
-              sed -i "s|archive.ubuntu.com|old-releases.ubuntu.com|g; s|security.ubuntu.com|old-releases.ubuntu.com|g" /etc/apt/sources.list
-              apt-get update
+              # 优先使用默认源；若默认源不可用，再回退到 old-releases 源
+              if ! apt-get update; then
+                echo "默认源不可用，回退到 old-releases.ubuntu.com"
+                sed -i "s|archive.ubuntu.com|old-releases.ubuntu.com|g; s|security.ubuntu.com|old-releases.ubuntu.com|g" /etc/apt/sources.list
+                apt-get update
+              fi
               apt-get install -y --no-install-recommends \
                 git build-essential gawk pkg-config gettext automake autoconf autopoint \
                 libtool bison flex zlib1g-dev libgmp3-dev libmpfr-dev libmpc-dev texinfo \
