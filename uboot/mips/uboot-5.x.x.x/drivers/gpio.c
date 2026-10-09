@@ -616,6 +616,13 @@ void gpio_init(void)
 	mtk_set_gpio_pin(GPIO_RST_INIC, 0);
 	udelay(1000);
 #endif
+
+#if defined(CONFIG_LED_BOOT_EFFECT)
+	/* Power-on indication: keep all LEDs on for 2 seconds, then turn
+	 * off every LED except Power and Init2 (USB). */
+	udelay(2000000);
+	LED_HIDE_ALL();
+#endif
 }
 
 void gpio_init_mdio(void)
@@ -671,7 +678,7 @@ void LED_HIDE_ALL(void)
 #if (GPIO_LED_INIT1 >= 0)
 	mtk_set_gpio_pin(GPIO_LED_INIT1, GPIO_VAL_LED_HIDE);
 #endif
-#if (GPIO_LED_INIT2 >= 0)
+#if (GPIO_LED_INIT2 >= 0) && !defined(CONFIG_LED_BOOT_EFFECT)
 	mtk_set_gpio_pin(GPIO_LED_INIT2, GPIO_VAL_LED_HIDE);
 #endif
 #if (GPIO_LED_INIT3 >= 0)

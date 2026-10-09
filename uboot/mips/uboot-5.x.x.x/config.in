@@ -1699,6 +1699,7 @@ int  'LED Alert2 GPIO'		GPIO_LED_ALERT2		-1
 int  'LED Alert3 GPIO'		GPIO_LED_ALERT3		-1
 int  'LED Alert4 GPIO'		GPIO_LED_ALERT4		-1
 int  'LED Power GPIO'		GPIO_LED_POWER		-1
+bool 'LED boot effect (all on 2s, then keep Power and Init2 LED)' CONFIG_LED_BOOT_EFFECT n
 int  'USB #1 5V Power GPIO'	GPIO_USB_POWER		-1
 int  'USB #2 5V Power GPIO'	GPIO_USB_POWER2		-1
 int  'Reset iNIC GPIO'		GPIO_RST_INIC		-1
