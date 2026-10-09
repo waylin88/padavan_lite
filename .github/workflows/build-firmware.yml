@@ -159,7 +159,7 @@ jobs:
                 git build-essential gawk pkg-config gettext automake autoconf autopoint \
                 libtool libltdl-dev bison flex zlib1g-dev libgmp3-dev libmpfr-dev libmpc-dev texinfo \
                 libncurses5-dev gperf python-docutils sudo ca-certificates bzip2 patch \
-                wget cpio rsync unzip file kmod
+                wget cpio rsync unzip file kmod fakeroot
 
               echo "==================== TOOLCHAIN ($KERNEL_VER) ===================="
               cd "$GITHUB_WORKSPACE/toolchain-mipsel"
@@ -175,9 +175,7 @@ jobs:
 
               echo "==================== FIRMWARE ($CONFIG_FILE) ===================="
               cd "$GITHUB_WORKSPACE/trunk"
-              cp -f "configs/templates/$CONFIG_FILE" .config
-              sed -i "s|^CONFIG_TOOLCHAIN_DIR=.*|CONFIG_TOOLCHAIN_DIR=$GITHUB_WORKSPACE/toolchain-mipsel|" .config
-              ./build_firmware
+              fakeroot ./build_firmware_modify "$CONFIG_FILE"
             '
 
       - name: Upload firmware artifact
