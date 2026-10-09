@@ -618,9 +618,9 @@ void gpio_init(void)
 #endif
 
 #if defined(CONFIG_LED_BOOT_EFFECT)
-	/* Power-on indication: keep all LEDs on for 2 seconds, then turn
-	 * off every LED except Power and Init2 (USB). */
-	udelay(2000000);
+	/* Power-on indication: blink all LEDs once, then turn off every LED
+	 * except Power and Init2 (USB). */
+	udelay(150000);
 	LED_HIDE_ALL();
 #endif
 }
