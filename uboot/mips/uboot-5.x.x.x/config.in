@@ -13,6 +13,8 @@ choice 'UART baudrate'  "115200 CONFIG_BAUDRATE_115200 \
 
 define_bool ASIC_BOARD y
 
+bool 'Pure Boot (no menu, no USB, boot system from flash directly)' CONFIG_PURE_BOOT
+
 if [ "$FPGA_BOARD" = "y" ]; then
 choice 'Chip ID'	 "RT2880 RT2880_FPGA_BOARD \
                           RT3052 RT3052_FPGA_BOARD \

@@ -33,8 +33,11 @@ COBJS	= main.o cmd_bdinfo.o cmd_boot.o cmd_bootm.o cmd_console.o \
 	cmd_nvedit.o command.o console.o devices.o dlmalloc.o \
 	env_common.o exports.o lists.o cmd_tftpServer.o
 else
+# Minimal command set: keep cmd_tftpServer.o because board.c always needs
+# do_tftpd() (flash boot + reset-button TFTP rescue), even without the CLI.
 COBJS = console.o devices.o dlmalloc.o \
-	env_common.o exports.o lists.o cmd_nvedit.o cmd_bootm.o cmd_net.o
+	env_common.o exports.o lists.o cmd_nvedit.o cmd_bootm.o cmd_net.o \
+	cmd_tftpServer.o
 endif
 
 ifeq ($(RALINK_UPGRADE_BY_SERIAL),ON)

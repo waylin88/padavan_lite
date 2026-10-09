@@ -915,6 +915,7 @@ __attribute__((nomips16)) void board_init_f(ulong bootflag)
 #define SEL_LOAD_BOOT_WRITE_FLASH       9
 
 
+#if !defined(CONFIG_PURE_BOOT)
 void OperationSelect(void)
 {
 	printf("\nPlease choose the operation: \n");
@@ -1032,6 +1033,7 @@ int tftp_config(int type, char *argv[])
 
 	return 0;
 }
+#endif /* !CONFIG_PURE_BOOT */
 
 static inline void trigger_hw_reset(void)
 {
@@ -2158,6 +2160,10 @@ __attribute__((nomips16)) void board_init_r (gd_t *id, ulong dest_addr)
 #ifdef DUAL_IMAGE_SUPPORT
 	check_image_validation();
 #endif
+#if defined(CONFIG_PURE_BOOT)
+	/* Pure boot: no interactive menu, boot the system from flash directly. */
+	BootType = '3';
+#else
 /*config bootdelay via environment parameter: bootdelay */
 	{
 	    char * s;
@@ -2182,6 +2188,7 @@ __attribute__((nomips16)) void board_init_r (gd_t *id, ulong dest_addr)
 		}
 		printf ("\b\b\b%2d ", timer1);
 	}
+#endif /* CONFIG_PURE_BOOT */
 
 #if (CONFIG_COMMANDS & CFG_CMD_NET)
 	eth_initialize(gd->bd);
@@ -2198,6 +2205,7 @@ __attribute__((nomips16)) void board_init_r (gd_t *id, ulong dest_addr)
 		/* prepare tftpd, check buttons, image integrity and boot */
 		do_tftpd(cmdtp, 0, 2, argv);
 	}
+#if !defined(CONFIG_PURE_BOOT)
 	else {
 		char *argv[4];
 		int argc = 3;
@@ -2373,6 +2381,7 @@ retry_uboot_tftp:
 		perform_system_reset();
 
 	} /* end of else */
+#endif /* !CONFIG_PURE_BOOT */
 
 	/* NOTREACHED - no way out of command loop except booting */
 }

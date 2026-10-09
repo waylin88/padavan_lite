@@ -87,6 +87,27 @@ endif
 RALINK_CMDLINE = OFF
 endif
 
+###################################
+# Pure Boot: no interactive menu, no USB / serial upgrade, boot flash directly.
+# Keeps the reset-button TFTP rescue path (do_tftpd) as the safety net.
+###################################
+ifeq ($(CONFIG_PURE_BOOT),y)
+RALINK_CMDLINE = OFF
+RALINK_UPGRADE_BY_SERIAL = OFF
+# MT7620 board.c calls rw_rf_reg() during init, so it cannot be dropped there.
+ifeq ($(MT7620_ASIC_BOARD),y)
+RALINK_RW_RF_REG_FUN = ON
+else
+RALINK_RW_RF_REG_FUN = OFF
+endif
+RALINK_USB = OFF
+RALINK_OHCI = OFF
+RALINK_EHCI = OFF
+MTK_XHCI = OFF
+MTK_MSDC = OFF
+USB_RECOVERY_SUPPORT = n
+endif
+
 ##############################
 # Decompression Algorithm
 ##############################
