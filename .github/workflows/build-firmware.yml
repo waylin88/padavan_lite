@@ -1,0 +1,192 @@
+name: Build Padavan Firmware
+
+# 在 GitHub 网页端 Actions -> Build Padavan Firmware -> Run workflow 中手动选择机型编译
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: '选择要编译的机型'
+        required: true
+        default: 'RT-N56U'
+        type: choice
+        options:
+          - RT-N56U
+          - RT-N56U-dlna
+          - RT-N56U-aria
+          - RT-N56U-trmd
+          - RT-N65U
+          - RT-N65U-full
+          - RT-N56UB1
+          - RT-N56UB1-full
+          - RT-N14U
+          - RT-N14U-full
+          - RT-N11P
+          - RT-N11P-nano
+          - RT-AC51U
+          - RT-AC51U-full
+          - RT-AC54U
+          - RT-AC1200HP
+          - KN-4G3
+          - KN-4G3B
+          - KN-EXTRA
+          - KN-GIGA3
+          - KN-LITE2
+          - KN-LITE3
+          - KN-LITE3B
+          - KN-OMNI
+          - KN-OMNI2
+          - KN-START2
+          - KN-ULTRA2
+          - KN-VIVA
+      custom_config:
+        description: '自定义配置模板（相对 trunk/configs/templates 的路径，可选；填写后覆盖上面的机型选择）'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}-${{ inputs.model }}-${{ inputs.custom_config }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve target model
+        id: resolve
+        shell: bash
+        env:
+          MODEL: ${{ inputs.model }}
+          CUSTOM: ${{ inputs.custom_config }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "${CUSTOM}" ]; then
+            CONFIG_FILE="${CUSTOM}"
+          else
+            case "${MODEL}" in
+              RT-N56U)        CONFIG_FILE="n56u_base.config" ;;
+              RT-N56U-dlna)   CONFIG_FILE="n56u_dlna.config" ;;
+              RT-N56U-aria)   CONFIG_FILE="n56u_aria.config" ;;
+              RT-N56U-trmd)   CONFIG_FILE="n56u_trmd.config" ;;
+              RT-N65U)        CONFIG_FILE="n65u_base.config" ;;
+              RT-N65U-full)   CONFIG_FILE="n65u_full.config" ;;
+              RT-N56UB1)      CONFIG_FILE="n56ub1_base.config" ;;
+              RT-N56UB1-full) CONFIG_FILE="n56ub1_full.config" ;;
+              RT-N14U)        CONFIG_FILE="n14u_base.config" ;;
+              RT-N14U-full)   CONFIG_FILE="n14u_full.config" ;;
+              RT-N11P)        CONFIG_FILE="n11p_base.config" ;;
+              RT-N11P-nano)   CONFIG_FILE="n11p_nano.config" ;;
+              RT-AC51U)       CONFIG_FILE="ac51u_base.config" ;;
+              RT-AC51U-full)  CONFIG_FILE="ac51u_full.config" ;;
+              RT-AC54U)       CONFIG_FILE="ac54u_base.config" ;;
+              RT-AC1200HP)    CONFIG_FILE="ac1200hp_base.config" ;;
+              KN-4G3)         CONFIG_FILE="zyxel/k4g3.config" ;;
+              KN-4G3B)        CONFIG_FILE="zyxel/k4g3b.config" ;;
+              KN-EXTRA)       CONFIG_FILE="zyxel/kextra.config" ;;
+              KN-GIGA3)       CONFIG_FILE="zyxel/kgiga3.config" ;;
+              KN-LITE2)       CONFIG_FILE="zyxel/klite2.config" ;;
+              KN-LITE3)       CONFIG_FILE="zyxel/klite3.config" ;;
+              KN-LITE3B)      CONFIG_FILE="zyxel/klite3b.config" ;;
+              KN-OMNI)        CONFIG_FILE="zyxel/komni.config" ;;
+              KN-OMNI2)       CONFIG_FILE="zyxel/komni2.config" ;;
+              KN-START2)      CONFIG_FILE="zyxel/kstart2.config" ;;
+              KN-ULTRA2)      CONFIG_FILE="zyxel/kultra2.config" ;;
+              KN-VIVA)        CONFIG_FILE="zyxel/kviva.config" ;;
+              *) echo "::error::未知机型: ${MODEL}"; exit 1 ;;
+            esac
+          fi
+
+          CFG_PATH="trunk/configs/templates/${CONFIG_FILE}"
+          if [ ! -f "${CFG_PATH}" ]; then
+            echo "::error::找不到配置模板: ${CFG_PATH}"
+            exit 1
+          fi
+
+          KERNEL_DIR=$(grep -E '^CONFIG_LINUXDIR=' "${CFG_PATH}" | head -n1 | cut -d= -f2)
+          KERNEL_VER="${KERNEL_DIR#linux-}"
+          PRODUCT=$(grep -E '^CONFIG_FIRMWARE_PRODUCT_ID=' "${CFG_PATH}" | head -n1 | cut -d= -f2 | tr -d '"')
+
+          echo "机型: ${MODEL}"
+          echo "配置模板: ${CONFIG_FILE}"
+          echo "内核: ${KERNEL_VER}"
+          echo "输出名称: ${PRODUCT}"
+
+          echo "config_file=${CONFIG_FILE}" >> "$GITHUB_OUTPUT"
+          echo "kernel_ver=${KERNEL_VER}" >> "$GITHUB_OUTPUT"
+          echo "product=${PRODUCT}" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### 编译目标"
+            echo ""
+            echo "| 项目 | 值 |"
+            echo "| --- | --- |"
+            echo "| 机型 | ${MODEL} |"
+            echo "| 配置模板 | ${CONFIG_FILE} |"
+            echo "| 内核 | ${KERNEL_VER} |"
+            echo "| 输出 | ${PRODUCT} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Cache toolchain
+        id: cache-toolchain
+        uses: actions/cache@v4
+        with:
+          path: |
+            toolchain-mipsel/toolchain-3.4.x
+            toolchain-mipsel/toolchain-3.0.x
+          key: toolchain-${{ steps.resolve.outputs.kernel_ver }}-${{ hashFiles('toolchain-mipsel/src/**') }}
+
+      - name: Build firmware
+        env:
+          CONFIG_FILE: ${{ steps.resolve.outputs.config_file }}
+          KERNEL_VER: ${{ steps.resolve.outputs.kernel_ver }}
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE":"$GITHUB_WORKSPACE" \
+            -w "$GITHUB_WORKSPACE" \
+            -e GITHUB_WORKSPACE="$GITHUB_WORKSPACE" \
+            -e CONFIG_FILE="$CONFIG_FILE" \
+            -e KERNEL_VER="$KERNEL_VER" \
+            ubuntu:16.04 bash -c '
+              set -e
+              export DEBIAN_FRONTEND=noninteractive
+
+              # Ubuntu 16.04 已进入 EOL，切换到 old-releases 源
+              sed -i "s|archive.ubuntu.com|old-releases.ubuntu.com|g; s|security.ubuntu.com|old-releases.ubuntu.com|g" /etc/apt/sources.list
+              apt-get update
+              apt-get install -y --no-install-recommends \
+                git build-essential gawk pkg-config gettext automake autoconf autopoint \
+                libtool bison flex zlib1g-dev libgmp3-dev libmpfr-dev libmpc-dev texinfo \
+                libncurses5-dev gperf python-docutils sudo ca-certificates bzip2 patch \
+                wget cpio rsync unzip file
+
+              echo "==================== TOOLCHAIN ($KERNEL_VER) ===================="
+              cd "$GITHUB_WORKSPACE/toolchain-mipsel"
+              if [ -d "toolchain-$KERNEL_VER" ]; then
+                echo "Toolchain cache hit ($KERNEL_VER), skip build."
+              else
+                ./clean_sources
+                ./build_toolchain_"$KERNEL_VER"
+              fi
+
+              echo "==================== FIRMWARE ($CONFIG_FILE) ===================="
+              cd "$GITHUB_WORKSPACE/trunk"
+              cp -f "configs/templates/$CONFIG_FILE" .config
+              sed -i "s|^CONFIG_TOOLCHAIN_DIR=.*|CONFIG_TOOLCHAIN_DIR=$GITHUB_WORKSPACE/toolchain-mipsel|" .config
+              ./build_firmware
+            '
+
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ steps.resolve.outputs.product }}-${{ steps.resolve.outputs.kernel_ver }}
+          path: trunk/images/*.trx
+          if-no-files-found: error
+          retention-days: 30
