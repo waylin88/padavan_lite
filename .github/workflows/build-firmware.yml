@@ -134,15 +134,6 @@ jobs:
             echo "| 输出 | ${PRODUCT} |"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Cache toolchain
-        id: cache-toolchain
-        uses: actions/cache@v4
-        with:
-          path: |
-            toolchain-mipsel/toolchain-3.4.x
-            toolchain-mipsel/toolchain-3.0.x
-          key: toolchain-${{ steps.resolve.outputs.kernel_ver }}-${{ hashFiles('toolchain-mipsel/src/**') }}
-
       - name: Build firmware
         env:
           CONFIG_FILE: ${{ steps.resolve.outputs.config_file }}
@@ -173,8 +164,11 @@ jobs:
               echo "==================== TOOLCHAIN ($KERNEL_VER) ===================="
               cd "$GITHUB_WORKSPACE/toolchain-mipsel"
               if [ -d "toolchain-$KERNEL_VER" ]; then
-                echo "Toolchain cache hit ($KERNEL_VER), skip build."
+                echo "使用随仓库提交的预编译工具链 ($KERNEL_VER)，跳过构建。"
+              elif [ "$KERNEL_VER" = "3.4.x" ]; then
+                ./dl_toolchain.sh
               else
+                echo "未找到 $KERNEL_VER 预编译工具链，回退从源码编译。"
                 ./clean_sources
                 ./build_toolchain_"$KERNEL_VER"
               fi

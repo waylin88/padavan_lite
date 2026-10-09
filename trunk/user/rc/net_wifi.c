@@ -24,6 +24,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <time.h>
 #include <net/if.h>
 
 #include "rc.h"

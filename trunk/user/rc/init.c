@@ -31,6 +31,7 @@
 #include <sys/reboot.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <sys/wait.h>
 #include <sys/time.h>
 

@@ -13,3 +13,6 @@ config.log
 config.status
 toolchain-*
 toolchain-*/*
+# 例外：随仓库提交的 hanwckf 预编译工具链（gcc 7.4.0 / uclibc-ng 1.0.32）
+!toolchain-3.4.x/
+!toolchain-3.4.x/**
