@@ -26,6 +26,7 @@ static uint32_t image_len;
 static uint16_t RescueAckFlag;
 
 extern IPaddr_t TempServerIP;
+extern uchar TempServerEther[6];
 extern image_header_t header;
 extern int do_bootm(cmd_tbl_t *, int, int, char *[]);
 extern int do_reset(cmd_tbl_t *, int, int, char *[]);
@@ -257,6 +258,11 @@ static void TftpHandler(uchar * pkt, unsigned dest, unsigned src, unsigned len)
 	{
 		return;
 	}
+
+	/* Reply directly to the sender of this packet instead of relying on
+	 * ARP for 'serverip'.  The client (put) may use any source IP. */
+	NetCopyIP(&NetServerIP, &TempServerIP);
+	memcpy(NetServerEther, TempServerEther, 6);
 
 	len -= 2;
 	/* warning: don't use increment (++) in ntohs() macros!! */

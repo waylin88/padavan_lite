@@ -201,6 +201,7 @@ extern void TftpdStart(void);
 extern void LED_ALERT_BLINK(void);
 extern void LED_ALERT_OFF(void);
 IPaddr_t TempServerIP=0;
+uchar TempServerEther[6]={0,0,0,0,0,0};
 
 /*=======================================*/
 //===================================================
@@ -1437,8 +1438,16 @@ NetReceive(volatile uchar * inpkt, int len)
 			return;
 		}
 		if (!NetCksumOk((uchar *)ip, IP_HDR_SIZE_NO_UDP / 2)) {
+			/*
+			 * Some USB / offload-capable NICs leave the IPv4 header
+			 * checksum unfilled when transmitting.  Do not drop such
+			 * frames here, otherwise a standard TFTP client (put)
+			 * can never reach the rescue server.  The destination IP
+			 * and UDP port checks below already filter foreign traffic.
+			 */
+#ifdef ET_DEBUG
 			puts ("checksum bad\n");
-			return;
+#endif
 		}
 		tmp = NetReadIP(&ip->ip_dst);
 		if (NetOurIP && tmp != NetOurIP && tmp != 0xFFFFFFFF) {
@@ -1501,6 +1510,7 @@ NetReceive(volatile uchar * inpkt, int len)
 		 *	IP header OK.  Pass the packet to the current handler.
 		 */
 		NetCopyIP(&TempServerIP,(void*)&ip->ip_src);/*TempServerIP is used in TFTPD */
+		memcpy(TempServerEther, et->et_src, 6);	/* remember who sent us this packet */
 		(*packetHandler)((uchar *)ip +IP_HDR_SIZE,
 						ntohs(ip->udp_dst),
 						ntohs(ip->udp_src),
