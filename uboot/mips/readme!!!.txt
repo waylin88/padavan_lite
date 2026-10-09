@@ -79,7 +79,7 @@ Both toolchains require x86 (32-bit) Linux environment.
 
                          BUILD INSTRUCTIONS
 
-- Copy appropriate '.config' file (e.g. profiles/asus_rt-n11p/.config)
+- Copy appropriate '.config' file (e.g. profiles/ZY-L1-7628N/.config)
   to 'uboot-5.x.x.x' dir.
 - Goto 'uboot-5.x.x.x' dir.
 - Run 'make menuconfig', choose [Exit] and confirm [Save]. This is important step!
