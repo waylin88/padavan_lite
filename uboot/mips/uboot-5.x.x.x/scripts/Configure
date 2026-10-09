@@ -118,7 +118,7 @@ ${var}:\\
 #	readln prompt default oldval
 #
 function readln () {
-	if [ "$DEFAULT" = "-d" -a -n "$3" ]; then
+	if [ "$DEFAULT" = "-d" ]; then
 		echo "$1"
 		ans=$2
 	else
@@ -560,7 +560,7 @@ if [ -f $DEFAULTS ]; then
   echo "# Using defaults found in" $DEFAULTS
   echo "#"
   . $DEFAULTS
-  sed -e 's/# \(CONFIG_[^ ]*\) is not.*/\1=n/' <$DEFAULTS >.config-is-not.$$
+  sed -e 's/# \(CONFIG_[^ ]*\) is not.*/\1=n/' -e 's/# \([A-Za-z_][A-Za-z0-9_]*\) is not set.*/\1=n/' <$DEFAULTS >.config-is-not.$$
   . .config-is-not.$$
   rm .config-is-not.$$
 else

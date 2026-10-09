@@ -1,0 +1,82 @@
+name: Build U-Boot
+
+# 在 GitHub 网页端 Actions -> Build U-Boot -> Run workflow 中手动选择机型编译
+# U-Boot 使用机型专属硬件参数（见 uboot/mips/profiles/<机型>/.config），
+# 与固件编译相互独立，可单独触发。
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: '选择要编译的 U-Boot 机型'
+        required: true
+        default: 'ZY-L1'
+        type: choice
+        options:
+          - ZY-L1
+          - ZY-L1-7620N
+          - JSH-03
+          - ZY-L1-7628N
+          - E8820V2
+          - R6220
+          - ZTE_E8820S
+          - all
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            qemu-user-static bzip2 file make
+
+      - name: Build U-Boot
+        env:
+          PROFILE: ${{ inputs.profile }}
+        run: |
+          set -euo pipefail
+          cd uboot/mips
+          # 解压原厂 32 位工具链到 /opt（需要 root），并在需要时用
+          # qemu-i386-static 包装；随后 build_uboot.sh 内部再次调用时
+          # 已是只读检查，无需 root。
+          sudo bash setup_toolchain.sh
+          ./build_uboot.sh "$PROFILE"
+
+      - name: Collect images
+        env:
+          PROFILE: ${{ inputs.profile }}
+        run: |
+          set -euo pipefail
+          cd uboot/mips
+
+          if [ "$PROFILE" = "all" ]; then
+            names=$(ls -1 profiles)
+          else
+            names="$PROFILE"
+          fi
+
+          mkdir -p "$GITHUB_WORKSPACE/boot-artifacts"
+          for n in $names; do
+            for img in uboot.bin uboot.img; do
+              if [ -f "profiles/$n/$img" ]; then
+                cp "profiles/$n/$img" "$GITHUB_WORKSPACE/boot-artifacts/${n}_${img}"
+              fi
+            done
+          done
+          ls -l "$GITHUB_WORKSPACE/boot-artifacts"
+
+      - name: Upload U-Boot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: uboot-${{ inputs.profile }}
+          path: boot-artifacts/*
+          if-no-files-found: error
+          retention-days: 30
