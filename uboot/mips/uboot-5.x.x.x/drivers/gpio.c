@@ -654,7 +654,6 @@ int DETECT_BTN_RESET(void)
 #if (GPIO_BTN_RESET >= 0)
 	if (mtk_get_gpio_pin(GPIO_BTN_RESET) == GPIO_VAL_BTN_PRESSED) {
 		key = 1;
-		printf("RESET button pressed!\n");
 	}
 #endif
 	return key;

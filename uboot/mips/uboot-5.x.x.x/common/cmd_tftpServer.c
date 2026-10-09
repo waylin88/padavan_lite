@@ -21,9 +21,6 @@ static ulong	TftpLastBlock;		/* last packet sequence number received */
 static ulong	TftpBlockWrapOffset;	/* memory offset due to wrapping	*/
 static int	TftpState;
 
-static uchar asuslink[] = "ASUSSPACELINK";
-static uchar maclink[] = "snxxxxxxxxxxx";
-
 static unsigned char *image_ptr;
 static uint32_t image_len;
 static uint16_t RescueAckFlag;
@@ -44,21 +41,40 @@ int do_tftpd(cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 {
 	const int press_times = 1;
 	int i = 0;
+	int hold = 0;
+	int rescue = 0;
 
-	if (DETECT_BTN_RESET())		/* RESET button */
+	/* Long press the RESET button (~2s) to enter the recovery mode. */
+	if (DETECT_BTN_RESET()) {
+		while (DETECT_BTN_RESET() && hold < 200) {
+			udelay(10000);
+			hold++;
+		}
+		if (hold >= 200)
+			rescue = 1;
+	}
+
+	if (rescue)
 	{
 		printf(" \n## Enter to Rescue Mode (%s) ##\n", "manual");
+
+		/* Fixed network for the recovery: this device is 192.168.1.1
+		 * and the TFTP client (server) is 192.168.1.10. */
+		setenv("ipaddr", "192.168.1.1");
+		setenv("serverip", "192.168.1.10");
+		setenv("netmask", "255.255.255.0");
+		setenv("gatewayip", "192.168.1.1");
 		setenv("autostart", "no");
-		
+
 		LED_ALERT_ON();
-		
+
 #if defined (RALINK_USB) || defined (MTK_USB)
 		if (flash_kernel_image_from_usb(cmdtp) == 0) {
 			perform_system_reset();
 			return 0;
 		}
 #endif
-		/* Wait forever for an image */
+		/* Wait for a firmware image pushed by a TFTP client (put) */
 		NetLoop(TFTPD);
 		perform_system_reset();
 	}
@@ -225,7 +241,6 @@ static void TftpHandler(uchar * pkt, unsigned dest, unsigned src, unsigned len)
 	ushort proto;
 	uint32_t offset;
 	volatile ushort *s;
-	int i;
 
 	if (dest != TftpOurPort) 
 	{
@@ -251,57 +266,6 @@ static void TftpHandler(uchar * pkt, unsigned dest, unsigned src, unsigned len)
 
 	switch (ntohs(proto))
 	{
-	case TFTP_RRQ:
-
-		printf("\n Get read request from:(");
-		print_IPaddr(TempServerIP);
-		printf(")\n");
-		NetCopyIP(&NetServerIP,&TempServerIP);
-
-		TftpServerPort = src;
-		TftpBlock = 1;
-		TftpBlockWrapOffset = 0;
-		TftpState = STATE_RRQ;
-
-		for (i=0; i<13; i++) 
-		{
-			if (*pkt++ != asuslink[i])
-				break;
-		}
-		if (i==13)
-		{ /* it's the firmware transmitting situation */
-			/* here get the IP address from the first packet. */
-			NetOurIP = (*pkt++) & 0x000000ff;
-			NetOurIP<<=8;
-			NetOurIP|= (*pkt++) & 0x000000ff;
-			NetOurIP<<=8;
-			NetOurIP|= (*pkt++) & 0x000000ff;
-			NetOurIP<<=8;
-			NetOurIP|= (*pkt++) & 0x000000ff;
-		}
-		else
-		{
-			for (i=0; i<13; i++)
-			{
-				if (*pkt++ != maclink[i])
-					break;
-			}
-			if(i==13)
-			{
-				/* here get the IP address from the first packet. */
-				NetOurIP = (*pkt++) & 0x000000ff;
-				NetOurIP<<=8;
-				NetOurIP|= (*pkt++) & 0x000000ff;
-				NetOurIP<<=8;
-				NetOurIP|= (*pkt++) & 0x000000ff;
-				NetOurIP<<=8;
-				NetOurIP|= (*pkt++) & 0x000000ff;
-			}
-		}
-
-		TftpdSend();//send a vacant Data packet as a ACK
-		break;
-		
 	case TFTP_WRQ:
 		TftpServerPort = src;
 		TftpBlock = 0;
