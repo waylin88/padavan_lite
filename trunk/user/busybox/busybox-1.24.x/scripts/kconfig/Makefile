@@ -142,6 +142,9 @@ subdir- += lxdialog
 
 # Add environment specific flags
 HOST_EXTRACFLAGS += $(shell $(CONFIG_SHELL) $(srctree)/$(src)/check.sh $(HOSTCC) $(HOSTCFLAGS))
+# Generated lexer (zconf.hash.c) uses bare "inline"; force GNU inline semantics
+# so kconf_id_lookup is emitted as an external symbol on modern GCC.
+HOST_EXTRACFLAGS += -fgnu89-inline
 
 # generated files seem to need this to find local include files
 HOSTCFLAGS_lex.zconf.o	:= -I$(src)

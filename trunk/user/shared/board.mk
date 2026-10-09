@@ -1,8 +1,8 @@
 ##################################################################
-# Board PID # Board Name       # PRODUCT # Note
+# Board PID # Board Name             # PRODUCT # Note
 ##################################################################
-# RT-N56U   # ASUS RT-N56U     # RT3883  #
+# ZY-L1-7628N     # ZY-L1-7628N                  # MT7628  #
 ##################################################################
 
-CFLAGS += -DBOARD_N56U -DVENDOR_ASUS
-BOARD_NUM_USB_PORTS=2
+CFLAGS += -DBOARD_ZY-L1-7628N
+BOARD_NUM_USB_PORTS=1
