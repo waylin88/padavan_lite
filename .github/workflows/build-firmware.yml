@@ -14,8 +14,6 @@ on:
           - RT-N56U-dlna
           - RT-N56U-aria
           - RT-N56U-trmd
-          - RT-N65U
-          - RT-N65U-full
           - RT-N56UB1
           - RT-N56UB1-full
           - RT-N14U
@@ -76,8 +74,6 @@ jobs:
               RT-N56U-dlna)   CONFIG_FILE="n56u_dlna.config" ;;
               RT-N56U-aria)   CONFIG_FILE="n56u_aria.config" ;;
               RT-N56U-trmd)   CONFIG_FILE="n56u_trmd.config" ;;
-              RT-N65U)        CONFIG_FILE="n65u_base.config" ;;
-              RT-N65U-full)   CONFIG_FILE="n65u_full.config" ;;
               RT-N56UB1)      CONFIG_FILE="n56ub1_base.config" ;;
               RT-N56UB1-full) CONFIG_FILE="n56ub1_full.config" ;;
               RT-N14U)        CONFIG_FILE="n14u_base.config" ;;

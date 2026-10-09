@@ -8,9 +8,6 @@ TARGET="mipsel-linux-uclibc"
 TARGET_DIR="$DIR/src/$TARGET-toolchain"
 
 KERNELVER="3.4.x"
-if [ "$1" = "--kernel-3_0" ] ; then
-    KERNELVER="3.0.x"
-fi
 
 ID_BINUTILS="binutils-$BINUTILSVER"
 ID_GCC="gcc-$GCCVER"

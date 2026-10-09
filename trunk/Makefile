@@ -53,13 +53,6 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-ifneq ($(findstring linux-3.0,$(LINUXDIR)),)
-FIRMWARE_KERNEL_VER="3.0"
-CONFIG_CROSS_COMPILER_ROOT = $(CONFIG_TOOLCHAIN_DIR)/toolchain-3.0.x
-CONFIG_CROSS_COMPILER_PATH = $(CONFIG_CROSS_COMPILER_ROOT)/bin
-KERNEL_HEADERS_PATH = $(CONFIG_CROSS_COMPILER_ROOT)/include
-endif
-
 ifneq ($(findstring linux-3.4,$(LINUXDIR)),)
 FIRMWARE_KERNEL_VER="3.4"
 CONFIG_CROSS_COMPILER_ROOT = $(CONFIG_TOOLCHAIN_DIR)/toolchain-3.4.x

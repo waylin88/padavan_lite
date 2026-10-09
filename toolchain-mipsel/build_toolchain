@@ -5,9 +5,6 @@ DIR=`pwd`
 . "$DIR/versions.inc"
 
 KERNELVER="3.4.x"
-if [ "$1" = "--kernel-3_0" ] ; then
-    KERNELVER="3.0.x"
-fi
 
 DO_UNPACK=YES
 DO_HEADERS=YES
