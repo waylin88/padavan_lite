@@ -157,7 +157,7 @@ jobs:
               fi
               apt-get install -y --no-install-recommends \
                 git build-essential gawk pkg-config gettext automake autoconf autopoint \
-                libtool bison flex zlib1g-dev libgmp3-dev libmpfr-dev libmpc-dev texinfo \
+                libtool libltdl-dev bison flex zlib1g-dev libgmp3-dev libmpfr-dev libmpc-dev texinfo \
                 libncurses5-dev gperf python-docutils sudo ca-certificates bzip2 patch \
                 wget cpio rsync unzip file
 
