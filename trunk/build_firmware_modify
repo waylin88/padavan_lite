@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+# 按机型编译固件（用法参考 hanwckf/rt-n56u 的 build_firmware_modify）
+#
+#   fakeroot ./build_firmware_modify <机型>
+#
+# <机型> 即 configs/templates 下的配置模板名（可省略 .config 后缀），
+# 支持子目录，例如：
+#   fakeroot ./build_firmware_modify n56u_base
+#   fakeroot ./build_firmware_modify ac51u_full
+#   fakeroot ./build_firmware_modify zyxel/kextra
+#
+# 适配新设备：
+#   1) 在 configs/templates/ 下新增 <机型>.config（可参照同芯片的现有模板）
+#   2) 在 configs/boards/<CONFIG_FIRMWARE_PRODUCT_ID>/ 下准备
+#      board.h、board.mk、kernel-<版本>.config
+#   3) 直接以该机型名调用本脚本即可
+#
+set -e
+
+# 切到脚本所在目录（即 trunk/），build_firmware 以当前目录为工程根
+cd "$(dirname "$0")"
+ROOTDIR=`pwd`
+export ROOTDIR=$ROOTDIR
+
+TEMPLATE_ROOT="$ROOTDIR/configs/templates"
+TOOLCHAIN_DIR="$(cd "$ROOTDIR/.." && pwd)/toolchain-mipsel"
+
+usage_list()
+{
+	echo "可用的机型（configs/templates/*.config）："
+	for f in "$TEMPLATE_ROOT"/*.config "$TEMPLATE_ROOT"/*/*.config ; do
+		[ -f "$f" ] || continue
+		echo "  ${f#$TEMPLATE_ROOT/}" | sed 's/\.config$//'
+	done
+}
+
+if [ -z "$1" ] ; then
+	echo "用法: fakeroot $0 <机型>"
+	usage_list
+	exit 1
+fi
+
+if [ "$EUID" != 0 ] ; then
+	echo "请使用 'fakeroot $0 $1' 运行（WSL 下可用 fakeroot-tcp，或 sudo）"
+	exit 1
+fi
+
+# 允许传入时带 .config 后缀
+MODEL=${1%.config}
+TEMPLATE="$TEMPLATE_ROOT/$MODEL.config"
+
+if [ ! -f "$TEMPLATE" ] ; then
+	echo "找不到机型配置模板: $TEMPLATE"
+	usage_list
+	exit 1
+fi
+
+echo "==================== BUILD MODEL: $MODEL ===================="
+cp -f "$TEMPLATE" "$ROOTDIR/.config"
+
+# 指向本仓库自带的预编译工具链（toolchain-mipsel/toolchain-<版本>）
+if grep -q "^CONFIG_TOOLCHAIN_DIR=" "$ROOTDIR/.config" ; then
+	sed -i "s|^CONFIG_TOOLCHAIN_DIR=.*|CONFIG_TOOLCHAIN_DIR=$TOOLCHAIN_DIR|" "$ROOTDIR/.config"
+else
+	echo "CONFIG_TOOLCHAIN_DIR=$TOOLCHAIN_DIR" >> "$ROOTDIR/.config"
+fi
+echo "CONFIG_TOOLCHAIN_DIR=$TOOLCHAIN_DIR"
+
+# 所选机型使用的内核版本，若对应工具链缺失则给出提示
+KERNEL_VER=$(grep -E '^CONFIG_LINUXDIR=' "$ROOTDIR/.config" | head -n1 | cut -d= -f2 | sed 's/^linux-//')
+if [ ! -d "$TOOLCHAIN_DIR/toolchain-$KERNEL_VER" ] ; then
+	echo "警告: 未找到 toolchain-$KERNEL_VER（预期路径 $TOOLCHAIN_DIR/toolchain-$KERNEL_VER）"
+	echo "      可先执行: ( cd $TOOLCHAIN_DIR && ./build_toolchain_$KERNEL_VER )"
+fi
+
+echo "==================== BUILD START ===================="
+./build_firmware
+
+echo "==================== BUILD DONE ===================="
+ls -l "$ROOTDIR/images/"*.trx 2>/dev/null || echo "未生成 .trx，请检查构建日志"
