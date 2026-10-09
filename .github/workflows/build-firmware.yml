@@ -36,6 +36,13 @@ on:
           - KN-START2
           - KN-ULTRA2
           - KN-VIVA
+          - E8820V2
+          - JSH-03
+          - R6220
+          - ZTE_E8820S
+          - ZY-L1
+          - ZY-L1-7620N
+          - ZY-L1-7628N
       custom_config:
         description: '自定义配置模板（相对 trunk/configs/templates 的路径，可选；填写后覆盖上面的机型选择）'
         required: false
@@ -96,6 +103,13 @@ jobs:
               KN-START2)      CONFIG_FILE="zyxel/kstart2.config" ;;
               KN-ULTRA2)      CONFIG_FILE="zyxel/kultra2.config" ;;
               KN-VIVA)        CONFIG_FILE="zyxel/kviva.config" ;;
+              E8820V2)        CONFIG_FILE="E8820V2.config" ;;
+              JSH-03)         CONFIG_FILE="JSH-03.config" ;;
+              R6220)          CONFIG_FILE="R6220.config" ;;
+              ZTE_E8820S)     CONFIG_FILE="ZTE_E8820S.config" ;;
+              ZY-L1)          CONFIG_FILE="ZY-L1.config" ;;
+              ZY-L1-7620N)    CONFIG_FILE="ZY-L1-7620N.config" ;;
+              ZY-L1-7628N)    CONFIG_FILE="ZY-L1-7628N.config" ;;
               *) echo "::error::未知机型: ${MODEL}"; exit 1 ;;
             esac
           fi
