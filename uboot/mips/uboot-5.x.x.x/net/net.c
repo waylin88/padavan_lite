@@ -309,7 +309,6 @@ NetLoop(proto_t protocol)
 		buf = rt2880_free_buf_entry_dequeue(&rt2880_free_buf_list); 
 		NetTxPacket = buf->pbuf;
 
-		debug("\n NetTxPacket = 0x%08X \n",NetTxPacket);
 		for (i = 0; i < NUM_RX_DESC; i++) {
 
 			buf = rt2880_free_buf_entry_dequeue(&rt2880_free_buf_list); 
@@ -326,19 +325,15 @@ NetLoop(proto_t protocol)
 	
 	NetTxPacket = KSEG1ADDR(NetTxPacket);
 
-	printf("\n KSEG1ADDR(NetTxPacket) = 0x%08X \n",NetTxPacket);
-
 	if (!NetArpWaitTxPacket) {
 		NetArpWaitTxPacket = &NetArpWaitPacketBuf[0] + (PKTALIGN - 1);
 		NetArpWaitTxPacket -= (ulong)NetArpWaitTxPacket % PKTALIGN;
 		NetArpWaitTxPacketSize = 0;
 	}
-	printf("\n NetLoop,call eth_halt ! \n");
 	eth_halt();
 #ifdef CONFIG_NET_MULTI
 	eth_set_current();
 #endif
-	printf("\n NetLoop,call eth_init ! \n");
 	if (eth_init(bd) < 0)
 	{
 	    printf("\n eth_init is fail !!\n");

@@ -57,8 +57,6 @@ int do_tftpd(cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 
 	if (rescue)
 	{
-		printf(" \n## Enter to Rescue Mode (%s) ##\n", "manual");
-
 		/* Fixed network for the recovery: this device is 192.168.1.1
 		 * and the TFTP client (server) is 192.168.1.10. */
 		setenv("ipaddr", "192.168.1.1");
@@ -388,9 +386,6 @@ void TftpdStart(void)
 #if defined(CONFIG_NET_MULTI)
 	printf("Using %s device\n", eth_get_name());
 #endif
-	puts("\nOur IP address is:(");	
-	print_IPaddr(NetOurIP);
-	puts(")\nWait for TFTP request...\n");
 	/* Check if we need to send across this subnet */
 	if (NetOurGatewayIP && NetOurSubnetMask) 
 	{

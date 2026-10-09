@@ -324,11 +324,8 @@ int eth_init(bd_t *bis)
 
 	old_current = eth_current;
 	do {
-		debug ("Trying %s\n", eth_current->name);
-
 		if (eth_current->init(eth_current, bis)) {
 			eth_current->state = ETH_STATE_ACTIVE;
-			printf("\n ETH_STATE_ACTIVE!! \n");
 			return 1;
 		}
 		printf  ("FAIL\n");
