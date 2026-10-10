@@ -60,21 +60,20 @@
 
 <p>Currently available applets include:</p>
 
-<pre><code>[, [[, addgroup, adduser, arp, arping, ash, awk, basename, bash,
-brctl, bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd,
-chroot, clear, cp, crond, crontab, cut, date, dd, df, dhcp6c,
-dirname, dmesg, dnsdomainname, dos2unix, du, echo, egrep, eject,
-env, ether-wake, expr, false, fdisk, fgrep, find, flock, free,
-fuser, grep, gunzip, gzip, head, hostname, ifconfig, inetd, insmod,
-kill, killall, klogd, ln, logger, login, ls, lsmod, lsof, md5sum,
-mdev, microcom, mkdir, mknod, modprobe, more, mount, mountpoint, mv,
-netstat, nice, nslookup, ntpd, passwd, pgrep, pidof, ping, ping6,
-printf, ps, pwd, rm, rmdir, rmmod, route, sed, sendmail, seq, sh,
-sleep, sort, start-stop-daemon, stat, strings, switch_root, sync,
-sysctl, syslogd, tail, tar, tee, telnetd, test, time, top, touch,
-tr, traceroute, traceroute6, true, udhcpc, umount, uname, uniq,
-unix2dos, unlink, uptime, usleep, vconfig, vi, watch, wc, wget,
-which, whoami, xargs, yes, zcat, zcip</code></pre>
+<pre><code>[, [[, addgroup, adduser, arp, arping, ash, basename, bash, brctl,
+bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd, chroot,
+clear, cp, crond, crontab, cut, date, dd, df, dhcp6c, dirname,
+dmesg, dnsdomainname, dos2unix, du, echo, egrep, env, ether-wake,
+expr, false, fgrep, find, flock, free, fuser, grep, gunzip, gzip,
+head, hostname, ifconfig, insmod, kill, killall, klogd, ln, logger,
+login, ls, lsmod, lsof, md5sum, mdev, mkdir, mknod, modprobe, mount,
+mountpoint, mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof,
+ping, ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed, seq, sh,
+sleep, sort, start-stop-daemon, stat, switch_root, sync, sysctl,
+syslogd, tail, tar, tee, telnetd, test, time, touch, tr, traceroute,
+traceroute6, true, udhcpc, umount, uname, uniq, unix2dos, unlink,
+uptime, usleep, vconfig, watch, wc, wget, which, whoami, xargs, yes,
+zcat, zcip</code></pre>
 
 <h1 id="COMMAND-DESCRIPTIONS">COMMAND DESCRIPTIONS</h1>
 
@@ -153,17 +152,6 @@ DST_IP          Target IP address</code></pre>
 <p>ash [-/+OPTIONS] [-/+o OPT]... [-c &#39;SCRIPT&#39; [ARG0 [ARGS]] / FILE [ARGS]]</p>
 
 <p>Unix shell interpreter</p>
-
-</dd>
-<dt id="awk"><b>awk</b></dt>
-<dd>
-
-<p>awk [OPTIONS] [AWK_PROGRAM] [FILE]...</p>
-
-<pre><code>-v VAR=VAL      Set variable
--F SEP          Use SEP as field separator
--f FILE         Read program from FILE
--e AWK_PROGRAM</code></pre>
 
 </dd>
 <dt id="basename"><b>basename</b></dt>
@@ -508,18 +496,6 @@ status=none     Suppress all output</code></pre>
 -E      Don&#39;t interpret backslash escapes (default)</code></pre>
 
 </dd>
-<dt id="eject"><b>eject</b></dt>
-<dd>
-
-<p>eject [-t] [-T] [DEVICE]</p>
-
-<p>Eject DEVICE or default /dev/cdrom</p>
-
-<pre><code>-s      SCSI device
--t      Close tray
--T      Open/close tray (toggle)</code></pre>
-
-</dd>
 <dt id="env"><b>env</b></dt>
 <dd>
 
@@ -576,21 +552,6 @@ quote TOKEN             Interpret TOKEN as a string, even if
 (EXPRESSION)            Value of EXPRESSION</code></pre>
 
 <p>Beware that many operators need to be escaped or quoted for shells. Comparisons are arithmetic if both ARGs are numbers, else lexicographical. Pattern matches return the string matched between \( and \) or null; if \( and \) are not used, they return the number of characters matched or 0.</p>
-
-</dd>
-<dt id="fdisk"><b>fdisk</b></dt>
-<dd>
-
-<p>fdisk [-ul] [-C CYLINDERS] [-H HEADS] [-S SECTORS] [-b SSZ] DISK</p>
-
-<p>Change partition table</p>
-
-<pre><code>-u              Start and End are in sectors (instead of cylinders)
--l              Show partition table for each DISK, then exit
--b 2048         (for certain MO disks) use 2048-byte sectors
--C CYLINDERS    Set number of cylinders/heads/sectors
--H HEADS
--S SECTORS</code></pre>
 
 </dd>
 <dt id="find"><b>find</b></dt>
@@ -783,20 +744,6 @@ If none of the following actions is specified, -print is assumed
 [up|down] ...</code></pre>
 
 </dd>
-<dt id="inetd"><b>inetd</b></dt>
-<dd>
-
-<p>inetd [-fe] [-q N] [-R N] [CONFFILE]</p>
-
-<p>Listen for network connections and launch programs</p>
-
-<pre><code>-f      Run in foreground
--e      Log to stderr
--q N    Socket listen queue (default: 128)
--R N    Pause services after N connects/min
-        (default: 0 - disabled)</code></pre>
-
-</dd>
 <dt id="insmod"><b>insmod</b></dt>
 <dd>
 
@@ -958,20 +905,6 @@ If none of the following actions is specified, -print is assumed
 <p>If /dev/mdev.log file exists, debug log will be appended to it.</p>
 
 </dd>
-<dt id="microcom"><b>microcom</b></dt>
-<dd>
-
-<p>microcom [-d DELAY] [-t TIMEOUT] [-s SPEED] [-X] TTY</p>
-
-<p>Copy bytes for stdin to TTY and from TTY to stdout</p>
-
-<pre><code>-d      Wait up to DELAY ms for TTY output before sending every
-        next byte to it
--t      Exit if both stdin and TTY are silent for TIMEOUT ms
--s      Set serial line to SPEED
--X      Disable special meaning of NUL and Ctrl-X from stdin</code></pre>
-
-</dd>
 <dt id="mkdir"><b>mkdir</b></dt>
 <dd>
 
@@ -1009,14 +942,6 @@ TYPE:
 -v      Verbose
 -s      Log to syslog
 -D      Show dependencies</code></pre>
-
-</dd>
-<dt id="more"><b>more</b></dt>
-<dd>
-
-<p>more [FILE]...</p>
-
-<p>View FILE (or stdin) one screenful at a time</p>
 
 </dd>
 <dt id="mount"><b>mount</b></dt>
@@ -1303,40 +1228,6 @@ T       Show threads</code></pre>
 <p>If no -e or -f, the first non-option argument is the sed command string. Remaining arguments are input files (stdin if none).</p>
 
 </dd>
-<dt id="sendmail"><b>sendmail</b></dt>
-<dd>
-
-<p>sendmail [OPTIONS] [RECIPIENT_EMAIL]...</p>
-
-<p>Read email from stdin and send it</p>
-
-<p>Standard options:</p>
-
-<pre><code>-t              Read additional recipients from message body
--f SENDER       For use in MAIL FROM:&lt;sender&gt;. Can be empty string
-                Default: -auUSER, or username of current UID
--o OPTIONS      Various options. -oi implied, others are ignored
--i              -oi synonym. implied and ignored</code></pre>
-
-<p>Busybox specific options:</p>
-
-<pre><code>-v              Verbose
--w SECS         Network timeout
--H &#39;PROG ARGS&#39;  Run connection helper
-                Examples:
-                -H &#39;exec openssl s_client -quiet -tls1 -starttls smtp
-                        -connect smtp.gmail.com:25&#39; &lt;email.txt
-                        [4&lt;username_and_passwd.txt | -auUSER -apPASS]
-                -H &#39;exec openssl s_client -quiet -tls1
-                        -connect smtp.gmail.com:465&#39; &lt;email.txt
-                        [4&lt;username_and_passwd.txt | -auUSER -apPASS]
--S HOST[:PORT]  Server
--auUSER         Username for AUTH LOGIN
--apPASS         Password for AUTH LOGIN</code></pre>
-
-<p>Other options are silently ignored; -oi -t is implied</p>
-
-</dd>
 <dt id="seq"><b>seq</b></dt>
 <dd>
 
@@ -1464,19 +1355,6 @@ Other:
 %S     Fundamental block size (for block counts)
 %t     Type in hex
 %T     Type in human readable form</code></pre>
-
-</dd>
-<dt id="strings"><b>strings</b></dt>
-<dd>
-
-<p>strings [-afo] [-n LEN] [FILE]...</p>
-
-<p>Display printable strings in a binary file</p>
-
-<pre><code>-a      Scan whole file (default)
--f      Precede strings with filenames
--n LEN  At least LEN characters form a string (default 4)
--o      Precede strings with decimal offsets</code></pre>
 
 </dd>
 <dt id="switch_root"><b>switch_root</b></dt>
@@ -1611,27 +1489,6 @@ T       File with names to include</code></pre>
 <p>Run PROG, display resource usage when it exits</p>
 
 <pre><code>-v      Verbose</code></pre>
-
-</dd>
-<dt id="top"><b>top</b></dt>
-<dd>
-
-<p>top [-b] [-nCOUNT] [-dSECONDS] [-m]</p>
-
-<p>Provide a view of process activity in real time. Read the status of all processes from /proc each SECONDS and display a screenful of them. Keys:</p>
-
-<pre><code>N/M/P/T: show CPU usage, sort by pid/mem/cpu/time
-S: show memory
-R: reverse sort
-H: toggle threads
-Q,^C: exit</code></pre>
-
-<p>Options:</p>
-
-<pre><code>-b      Batch mode
--n N    Exit after N iterations
--d N    Delay between updates
--m      Same as &#39;s&#39; key</code></pre>
 
 </dd>
 <dt id="touch"><b>touch</b></dt>
@@ -1838,18 +1695,6 @@ set_flag        IFACE 0|1 VLAN_QOS
 set_egress_map  VLAN_NAME SKB_PRIO VLAN_QOS
 set_ingress_map VLAN_NAME SKB_PRIO VLAN_QOS
 set_name_type   NAME_TYPE</code></pre>
-
-</dd>
-<dt id="vi"><b>vi</b></dt>
-<dd>
-
-<p>vi [OPTIONS] [FILE]...</p>
-
-<p>Edit FILE</p>
-
-<pre><code>-c CMD  Initial command to run ($EXINIT also available)
--R      Read-only
--H      List available features</code></pre>
 
 </dd>
 <dt id="watch"><b>watch</b></dt>

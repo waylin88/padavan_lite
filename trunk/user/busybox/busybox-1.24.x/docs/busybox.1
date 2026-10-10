@@ -142,21 +142,20 @@ been enabled, more detailed usage information will also be available.
 Currently available applets include:
 .PP
 .Vb 10
-\&        [, [[, addgroup, adduser, arp, arping, ash, awk, basename, bash,
-\&        brctl, bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd,
-\&        chroot, clear, cp, crond, crontab, cut, date, dd, df, dhcp6c,
-\&        dirname, dmesg, dnsdomainname, dos2unix, du, echo, egrep, eject,
-\&        env, ether\-wake, expr, false, fdisk, fgrep, find, flock, free,
-\&        fuser, grep, gunzip, gzip, head, hostname, ifconfig, inetd, insmod,
-\&        kill, killall, klogd, ln, logger, login, ls, lsmod, lsof, md5sum,
-\&        mdev, microcom, mkdir, mknod, modprobe, more, mount, mountpoint, mv,
-\&        netstat, nice, nslookup, ntpd, passwd, pgrep, pidof, ping, ping6,
-\&        printf, ps, pwd, rm, rmdir, rmmod, route, sed, sendmail, seq, sh,
-\&        sleep, sort, start\-stop\-daemon, stat, strings, switch_root, sync,
-\&        sysctl, syslogd, tail, tar, tee, telnetd, test, time, top, touch,
-\&        tr, traceroute, traceroute6, true, udhcpc, umount, uname, uniq,
-\&        unix2dos, unlink, uptime, usleep, vconfig, vi, watch, wc, wget,
-\&        which, whoami, xargs, yes, zcat, zcip
+\&        [, [[, addgroup, adduser, arp, arping, ash, basename, bash, brctl,
+\&        bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd, chroot,
+\&        clear, cp, crond, crontab, cut, date, dd, df, dhcp6c, dirname,
+\&        dmesg, dnsdomainname, dos2unix, du, echo, egrep, env, ether\-wake,
+\&        expr, false, fgrep, find, flock, free, fuser, grep, gunzip, gzip,
+\&        head, hostname, ifconfig, insmod, kill, killall, klogd, ln, logger,
+\&        login, ls, lsmod, lsof, md5sum, mdev, mkdir, mknod, modprobe, mount,
+\&        mountpoint, mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof,
+\&        ping, ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed, seq, sh,
+\&        sleep, sort, start\-stop\-daemon, stat, switch_root, sync, sysctl,
+\&        syslogd, tail, tar, tee, telnetd, test, time, touch, tr, traceroute,
+\&        traceroute6, true, udhcpc, umount, uname, uniq, unix2dos, unlink,
+\&        uptime, usleep, vconfig, watch, wc, wget, which, whoami, xargs, yes,
+\&        zcat, zcip
 .Ve
 .SH "COMMAND DESCRIPTIONS"
 .IX Header "COMMAND DESCRIPTIONS"
@@ -233,16 +232,6 @@ Send ARP requests/replies
 ash [\-/+OPTIONS] [\-/+o OPT]... [\-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]
 .Sp
 Unix shell interpreter
-.IP \fBawk\fR 4
-.IX Item "awk"
-awk [OPTIONS] [AWK_PROGRAM] [FILE]...
-.Sp
-.Vb 4
-\&        \-v VAR=VAL      Set variable
-\&        \-F SEP          Use SEP as field separator
-\&        \-f FILE         Read program from FILE
-\&        \-e AWK_PROGRAM
-.Ve
 .IP \fBbasename\fR 4
 .IX Item "basename"
 basename FILE [SUFFIX]
@@ -550,17 +539,6 @@ Print the specified ARGs to stdout
 \&        \-e      Interpret backslash escapes (i.e., \et=tab)
 \&        \-E      Don\*(Aqt interpret backslash escapes (default)
 .Ve
-.IP \fBeject\fR 4
-.IX Item "eject"
-eject [\-t] [\-T] [DEVICE]
-.Sp
-Eject DEVICE or default /dev/cdrom
-.Sp
-.Vb 3
-\&        \-s      SCSI device
-\&        \-t      Close tray
-\&        \-T      Open/close tray (toggle)
-.Ve
 .IP \fBenv\fR 4
 .IX Item "env"
 env [\-iu] [\-] [name=value]... [PROG ARGS]
@@ -623,20 +601,6 @@ Comparisons are arithmetic if both ARGs are numbers, else
 lexicographical. Pattern matches return the string matched between
 \&\e( and \e) or null; if \e( and \e) are not used, they return the number
 of characters matched or 0.
-.IP \fBfdisk\fR 4
-.IX Item "fdisk"
-fdisk [\-ul] [\-C CYLINDERS] [\-H HEADS] [\-S SECTORS] [\-b SSZ] DISK
-.Sp
-Change partition table
-.Sp
-.Vb 6
-\&        \-u              Start and End are in sectors (instead of cylinders)
-\&        \-l              Show partition table for each DISK, then exit
-\&        \-b 2048         (for certain MO disks) use 2048\-byte sectors
-\&        \-C CYLINDERS    Set number of cylinders/heads/sectors
-\&        \-H HEADS
-\&        \-S SECTORS
-.Ve
 .IP \fBfind\fR 4
 .IX Item "find"
 find [\-HL] [PATH]... [OPTIONS] [ACTIONS]
@@ -820,19 +784,6 @@ Configure a network interface
 \&        [mem_start NN] [io_addr NN] [irq NN]
 \&        [up|down] ...
 .Ve
-.IP \fBinetd\fR 4
-.IX Item "inetd"
-inetd [\-fe] [\-q N] [\-R N] [CONFFILE]
-.Sp
-Listen for network connections and launch programs
-.Sp
-.Vb 5
-\&        \-f      Run in foreground
-\&        \-e      Log to stderr
-\&        \-q N    Socket listen queue (default: 128)
-\&        \-R N    Pause services after N connects/min
-\&                (default: 0 \- disabled)
-.Ve
 .IP \fBinsmod\fR 4
 .IX Item "insmod"
 insmod FILE [SYMBOL=VALUE]...
@@ -983,19 +934,6 @@ to match \f(CW$SEQNUM\fR variable. This prevents plug/unplug races.
 To activate this feature, create empty /dev/mdev.seq at boot.
 .Sp
 If /dev/mdev.log file exists, debug log will be appended to it.
-.IP \fBmicrocom\fR 4
-.IX Item "microcom"
-microcom [\-d DELAY] [\-t TIMEOUT] [\-s SPEED] [\-X] TTY
-.Sp
-Copy bytes for stdin to TTY and from TTY to stdout
-.Sp
-.Vb 5
-\&        \-d      Wait up to DELAY ms for TTY output before sending every
-\&                next byte to it
-\&        \-t      Exit if both stdin and TTY are silent for TIMEOUT ms
-\&        \-s      Set serial line to SPEED
-\&        \-X      Disable special meaning of NUL and Ctrl\-X from stdin
-.Ve
 .IP \fBmkdir\fR 4
 .IX Item "mkdir"
 mkdir [OPTIONS] DIRECTORY...
@@ -1032,11 +970,6 @@ modprobe [\-alrqvsD] MODULE [SYMBOL=VALUE]...
 \&        \-s      Log to syslog
 \&        \-D      Show dependencies
 .Ve
-.IP \fBmore\fR 4
-.IX Item "more"
-more [FILE]...
-.Sp
-View FILE (or stdin) one screenful at a time
 .IP \fBmount\fR 4
 .IX Item "mount"
 mount [OPTIONS] [\-o OPT] DEVICE NODE
@@ -1299,41 +1232,6 @@ or: sed [\-inrE] CMD [FILE]...
 .Sp
 If no \-e or \-f, the first non-option argument is the sed command string.
 Remaining arguments are input files (stdin if none).
-.IP \fBsendmail\fR 4
-.IX Item "sendmail"
-sendmail [OPTIONS] [RECIPIENT_EMAIL]...
-.Sp
-Read email from stdin and send it
-.Sp
-Standard options:
-.Sp
-.Vb 5
-\&        \-t              Read additional recipients from message body
-\&        \-f SENDER       For use in MAIL FROM:<sender>. Can be empty string
-\&                        Default: \-auUSER, or username of current UID
-\&        \-o OPTIONS      Various options. \-oi implied, others are ignored
-\&        \-i              \-oi synonym. implied and ignored
-.Ve
-.Sp
-Busybox specific options:
-.Sp
-.Vb 10
-\&        \-v              Verbose
-\&        \-w SECS         Network timeout
-\&        \-H \*(AqPROG ARGS\*(Aq  Run connection helper
-\&                        Examples:
-\&                        \-H \*(Aqexec openssl s_client \-quiet \-tls1 \-starttls smtp
-\&                                \-connect smtp.gmail.com:25\*(Aq <email.txt
-\&                                [4<username_and_passwd.txt | \-auUSER \-apPASS]
-\&                        \-H \*(Aqexec openssl s_client \-quiet \-tls1
-\&                                \-connect smtp.gmail.com:465\*(Aq <email.txt
-\&                                [4<username_and_passwd.txt | \-auUSER \-apPASS]
-\&        \-S HOST[:PORT]  Server
-\&        \-auUSER         Username for AUTH LOGIN
-\&        \-apPASS         Password for AUTH LOGIN
-.Ve
-.Sp
-Other options are silently ignored; \-oi \-t is implied
 .IP \fBseq\fR 4
 .IX Item "seq"
 seq [\-w] [\-s SEP] [FIRST [INC]] LAST
@@ -1461,18 +1359,6 @@ Valid format sequences for file systems:
 \& %t     Type in hex
 \& %T     Type in human readable form
 .Ve
-.IP \fBstrings\fR 4
-.IX Item "strings"
-strings [\-afo] [\-n LEN] [FILE]...
-.Sp
-Display printable strings in a binary file
-.Sp
-.Vb 4
-\&        \-a      Scan whole file (default)
-\&        \-f      Precede strings with filenames
-\&        \-n LEN  At least LEN characters form a string (default 4)
-\&        \-o      Precede strings with decimal offsets
-.Ve
 .IP \fBswitch_root\fR 4
 .IX Item "switch_root"
 switch_root [\-c /dev/console] NEW_ROOT NEW_INIT [ARGS]
@@ -1598,31 +1484,6 @@ Run PROG, display resource usage when it exits
 .Sp
 .Vb 1
 \&        \-v      Verbose
-.Ve
-.IP \fBtop\fR 4
-.IX Item "top"
-top [\-b] [\-nCOUNT] [\-dSECONDS] [\-m]
-.Sp
-Provide a view of process activity in real time.
-Read the status of all processes from /proc each SECONDS
-and display a screenful of them.
-Keys:
-.Sp
-.Vb 5
-\&        N/M/P/T: show CPU usage, sort by pid/mem/cpu/time
-\&        S: show memory
-\&        R: reverse sort
-\&        H: toggle threads
-\&        Q,^C: exit
-.Ve
-.Sp
-Options:
-.Sp
-.Vb 4
-\&        \-b      Batch mode
-\&        \-n N    Exit after N iterations
-\&        \-d N    Delay between updates
-\&        \-m      Same as \*(Aqs\*(Aq key
 .Ve
 .IP \fBtouch\fR 4
 .IX Item "touch"
@@ -1817,17 +1678,6 @@ Create and remove virtual ethernet devices
 \&        set_egress_map  VLAN_NAME SKB_PRIO VLAN_QOS
 \&        set_ingress_map VLAN_NAME SKB_PRIO VLAN_QOS
 \&        set_name_type   NAME_TYPE
-.Ve
-.IP \fBvi\fR 4
-.IX Item "vi"
-vi [OPTIONS] [FILE]...
-.Sp
-Edit FILE
-.Sp
-.Vb 3
-\&        \-c CMD  Initial command to run ($EXINIT also available)
-\&        \-R      Read\-only
-\&        \-H      List available features
 .Ve
 .IP \fBwatch\fR 4
 .IX Item "watch"
