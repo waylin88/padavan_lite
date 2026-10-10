@@ -1,1 +1,1 @@
-#define CONFIG_DHCP6C 1
+#undef CONFIG_DHCP6C

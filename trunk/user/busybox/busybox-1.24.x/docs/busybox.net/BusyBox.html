@@ -62,18 +62,17 @@
 
 <pre><code>[, [[, addgroup, adduser, arp, arping, ash, basename, bash, brctl,
 bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd, chroot,
-clear, cp, crond, crontab, cut, date, dd, df, dhcp6c, dirname,
-dmesg, dnsdomainname, dos2unix, du, echo, egrep, env, ether-wake,
-expr, false, fgrep, find, flock, free, fuser, grep, gunzip, gzip,
-head, hostname, ifconfig, insmod, kill, killall, klogd, ln, logger,
+clear, cp, crond, crontab, cut, date, dd, df, dirname, dmesg,
+dnsdomainname, dos2unix, du, echo, egrep, env, ether-wake, expr,
+false, fgrep, find, flock, free, fuser, grep, gunzip, gzip, head,
+hostname, ifconfig, insmod, ip, kill, killall, klogd, ln, logger,
 login, ls, lsmod, lsof, md5sum, mdev, mkdir, mknod, modprobe, mount,
 mountpoint, mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof,
-ping, ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed, seq, sh,
-sleep, sort, start-stop-daemon, stat, switch_root, sync, sysctl,
-syslogd, tail, tar, tee, telnetd, test, time, touch, tr, traceroute,
-traceroute6, true, udhcpc, umount, uname, uniq, unix2dos, unlink,
-uptime, usleep, vconfig, watch, wc, wget, which, whoami, xargs, yes,
-zcat, zcip</code></pre>
+ping, printf, ps, pwd, rm, rmdir, rmmod, route, sed, seq, sh, sleep,
+sort, start-stop-daemon, stat, switch_root, sync, sysctl, syslogd,
+tail, tar, tee, telnetd, test, time, touch, tr, traceroute, true,
+udhcpc, umount, uname, uniq, unix2dos, unlink, uptime, usleep,
+vconfig, watch, wc, wget, which, whoami, xargs, yes, zcat, zcip</code></pre>
 
 <h1 id="COMMAND-DESCRIPTIONS">COMMAND DESCRIPTIONS</h1>
 
@@ -419,19 +418,6 @@ status=none     Suppress all output</code></pre>
 -B SIZE Blocksize</code></pre>
 
 </dd>
-<dt id="dhcp6c"><b>dhcp6c</b></dt>
-<dd>
-
-<p>dhcp6c [-vfi] [-c FILE] [-D LL|LLT] [-p FILE] interface</p>
-
-<pre><code>-v         Print debugging messages(may be repeated)
--f         Foreground mode
--i         Info-req(information-only) mode
--c FILE    Use FILE as the configuration file
--D LL|LLT  Use LL or LLT to override default(LLT) DUID type generation
--p FILE    Use FILE to dump the process ID of dhcp6c</code></pre>
-
-</dd>
 <dt id="dirname"><b>dirname</b></dt>
 <dd>
 
@@ -733,9 +719,7 @@ If none of the following actions is specified, -print is assumed
 
 <p>Configure a network interface</p>
 
-<pre><code>[add ADDRESS[/PREFIXLEN]]
-[del ADDRESS[/PREFIXLEN]]
-[[-]broadcast [ADDRESS]] [[-]pointopoint [ADDRESS]]
+<pre><code>[[-]broadcast [ADDRESS]] [[-]pointopoint [ADDRESS]]
 [netmask ADDRESS] [dstaddr ADDRESS]
 [hw ether ADDRESS] [metric NN] [mtu NN]
 [[-]trailers] [[-]arp] [[-]allmulti]
@@ -750,6 +734,14 @@ If none of the following actions is specified, -print is assumed
 <p>insmod FILE [SYMBOL=VALUE]...</p>
 
 <p>Load kernel module</p>
+
+</dd>
+<dt id="ip"><b>ip</b></dt>
+<dd>
+
+<p>ip [OPTIONS] {address | route | link | } {COMMAND}</p>
+
+<p>ip [OPTIONS] OBJECT {COMMAND} where OBJECT := {address | route | link | } OPTIONS := { -f[amily] { inet | inet6 | link } | -o[neline] }</p>
 
 </dd>
 <dt id="kill"><b>kill</b></dt>
@@ -1109,8 +1101,7 @@ TYPE:
 
 <p>Send ICMP ECHO_REQUEST packets to network hosts</p>
 
-<pre><code>-4,-6           Force IP or IPv6 name resolution
--c CNT          Send only CNT pings
+<pre><code>-c CNT          Send only CNT pings
 -s SIZE         Send SIZE data bytes in packets (default:56)
 -t TTL          Set TTL
 -I IFACE/IP     Use interface or IP address as source
@@ -1118,21 +1109,6 @@ TYPE:
                 (after all -c CNT packets are sent)
 -w SEC          Seconds until ping exits (default:infinite)
                 (can exit earlier with -c CNT)
--q              Quiet, only display output at start
-                and when finished
--p              Pattern to use for payload</code></pre>
-
-</dd>
-<dt id="ping6"><b>ping6</b></dt>
-<dd>
-
-<p>ping6 [OPTIONS] HOST</p>
-
-<p>Send ICMP ECHO_REQUEST packets to network hosts</p>
-
-<pre><code>-c CNT          Send only CNT pings
--s SIZE         Send SIZE data bytes in packets (default:56)
--I IFACE/IP     Use interface or IP address as source
 -q              Quiet, only display output at start
                 and when finished
 -p              Pattern to use for payload</code></pre>
@@ -1210,7 +1186,7 @@ T       Show threads</code></pre>
 
 <pre><code>-n      Don&#39;t resolve names
 -e      Display other/more information
--A inet{6}      Select address family</code></pre>
+-A inet Select address family</code></pre>
 
 </dd>
 <dt id="sed"><b>sed</b></dt>
@@ -1520,12 +1496,11 @@ T       File with names to include</code></pre>
 <dt id="traceroute"><b>traceroute</b></dt>
 <dd>
 
-<p>traceroute [-46FIlnrv] [-f 1ST_TTL] [-m MAXTTL] [-q PROBES] [-p PORT] [-t TOS] [-w WAIT_SEC] [-s SRC_IP] [-i IFACE] [-z PAUSE_MSEC] HOST [BYTES]</p>
+<p>traceroute [-FIlnrv] [-f 1ST_TTL] [-m MAXTTL] [-q PROBES] [-p PORT] [-t TOS] [-w WAIT_SEC] [-s SRC_IP] [-i IFACE] [-z PAUSE_MSEC] HOST [BYTES]</p>
 
 <p>Trace the route to HOST</p>
 
-<pre><code>-4,-6   Force IP or IPv6 name resolution
--F      Set don&#39;t fragment bit
+<pre><code>-F      Set don&#39;t fragment bit
 -I      Use ICMP ECHO instead of UDP datagrams
 -l      Display TTL value of the returned packet
 -n      Print numeric addresses
@@ -1541,26 +1516,6 @@ T       File with names to include</code></pre>
 -t N    Type-of-service in probe packets (default 0)
 -w SEC  Time to wait for a response (default 3)
 -g IP   Loose source route gateway (8 max)</code></pre>
-
-</dd>
-<dt id="traceroute6"><b>traceroute6</b></dt>
-<dd>
-
-<p>traceroute6 [-nrv] [-m MAXTTL] [-q PROBES] [-p PORT] [-t TOS] [-w WAIT_SEC] [-s SRC_IP] [-i IFACE] HOST [BYTES]</p>
-
-<p>Trace the route to HOST</p>
-
-<pre><code>-n      Print numeric addresses
--r      Bypass routing tables, send directly to HOST
--v      Verbose
--m N    Max number of hops
--q N    Number of probes per hop (default 3)
--p N    Base UDP port number used in probes
-        (default 33434)
--s IP   Source address
--i IFACE Source interface
--t N    Type-of-service in probe packets (default 0)
--w SEC  Time wait for a response (default 3)</code></pre>
 
 </dd>
 <dt id="udhcpc"><b>udhcpc</b></dt>

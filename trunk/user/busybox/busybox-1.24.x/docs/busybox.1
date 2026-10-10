@@ -144,18 +144,17 @@ Currently available applets include:
 .Vb 10
 \&        [, [[, addgroup, adduser, arp, arping, ash, basename, bash, brctl,
 \&        bunzip2, bzcat, bzip2, cat, chgrp, chmod, chown, chpasswd, chroot,
-\&        clear, cp, crond, crontab, cut, date, dd, df, dhcp6c, dirname,
-\&        dmesg, dnsdomainname, dos2unix, du, echo, egrep, env, ether\-wake,
-\&        expr, false, fgrep, find, flock, free, fuser, grep, gunzip, gzip,
-\&        head, hostname, ifconfig, insmod, kill, killall, klogd, ln, logger,
+\&        clear, cp, crond, crontab, cut, date, dd, df, dirname, dmesg,
+\&        dnsdomainname, dos2unix, du, echo, egrep, env, ether\-wake, expr,
+\&        false, fgrep, find, flock, free, fuser, grep, gunzip, gzip, head,
+\&        hostname, ifconfig, insmod, ip, kill, killall, klogd, ln, logger,
 \&        login, ls, lsmod, lsof, md5sum, mdev, mkdir, mknod, modprobe, mount,
 \&        mountpoint, mv, netstat, nice, nslookup, ntpd, passwd, pgrep, pidof,
-\&        ping, ping6, printf, ps, pwd, rm, rmdir, rmmod, route, sed, seq, sh,
-\&        sleep, sort, start\-stop\-daemon, stat, switch_root, sync, sysctl,
-\&        syslogd, tail, tar, tee, telnetd, test, time, touch, tr, traceroute,
-\&        traceroute6, true, udhcpc, umount, uname, uniq, unix2dos, unlink,
-\&        uptime, usleep, vconfig, watch, wc, wget, which, whoami, xargs, yes,
-\&        zcat, zcip
+\&        ping, printf, ps, pwd, rm, rmdir, rmmod, route, sed, seq, sh, sleep,
+\&        sort, start\-stop\-daemon, stat, switch_root, sync, sysctl, syslogd,
+\&        tail, tar, tee, telnetd, test, time, touch, tr, traceroute, true,
+\&        udhcpc, umount, uname, uniq, unix2dos, unlink, uptime, usleep,
+\&        vconfig, watch, wc, wget, which, whoami, xargs, yes, zcat, zcip
 .Ve
 .SH "COMMAND DESCRIPTIONS"
 .IX Header "COMMAND DESCRIPTIONS"
@@ -469,18 +468,6 @@ Print filesystem usage statistics
 \&        \-i      Inodes
 \&        \-B SIZE Blocksize
 .Ve
-.IP \fBdhcp6c\fR 4
-.IX Item "dhcp6c"
-dhcp6c [\-vfi] [\-c FILE] [\-D LL|LLT] [\-p FILE] interface
-.Sp
-.Vb 6
-\&        \-v         Print debugging messages(may be repeated)
-\&        \-f         Foreground mode
-\&        \-i         Info\-req(information\-only) mode
-\&        \-c FILE    Use FILE as the configuration file
-\&        \-D LL|LLT  Use LL or LLT to override default(LLT) DUID type generation
-\&        \-p FILE    Use FILE to dump the process ID of dhcp6c
-.Ve
 .IP \fBdirname\fR 4
 .IX Item "dirname"
 dirname FILENAME
@@ -773,9 +760,7 @@ ifconfig [\-a] interface [address]
 .Sp
 Configure a network interface
 .Sp
-.Vb 9
-\&        [add ADDRESS[/PREFIXLEN]]
-\&        [del ADDRESS[/PREFIXLEN]]
+.Vb 7
 \&        [[\-]broadcast [ADDRESS]] [[\-]pointopoint [ADDRESS]]
 \&        [netmask ADDRESS] [dstaddr ADDRESS]
 \&        [hw ether ADDRESS] [metric NN] [mtu NN]
@@ -789,6 +774,13 @@ Configure a network interface
 insmod FILE [SYMBOL=VALUE]...
 .Sp
 Load kernel module
+.IP \fBip\fR 4
+.IX Item "ip"
+ip [OPTIONS] {address | route | link | } {COMMAND}
+.Sp
+ip [OPTIONS] OBJECT {COMMAND}
+where OBJECT := {address | route | link | }
+OPTIONS := { \-f[amily] { inet | inet6 | link } | \-o[neline] }
 .IP \fBkill\fR 4
 .IX Item "kill"
 kill [\-l] [\-SIG] PID...
@@ -1124,8 +1116,7 @@ ping [OPTIONS] HOST
 .Sp
 Send ICMP ECHO_REQUEST packets to network hosts
 .Sp
-.Vb 12
-\&        \-4,\-6           Force IP or IPv6 name resolution
+.Vb 11
 \&        \-c CNT          Send only CNT pings
 \&        \-s SIZE         Send SIZE data bytes in packets (default:56)
 \&        \-t TTL          Set TTL
@@ -1134,20 +1125,6 @@ Send ICMP ECHO_REQUEST packets to network hosts
 \&                        (after all \-c CNT packets are sent)
 \&        \-w SEC          Seconds until ping exits (default:infinite)
 \&                        (can exit earlier with \-c CNT)
-\&        \-q              Quiet, only display output at start
-\&                        and when finished
-\&        \-p              Pattern to use for payload
-.Ve
-.IP \fBping6\fR 4
-.IX Item "ping6"
-ping6 [OPTIONS] HOST
-.Sp
-Send ICMP ECHO_REQUEST packets to network hosts
-.Sp
-.Vb 6
-\&        \-c CNT          Send only CNT pings
-\&        \-s SIZE         Send SIZE data bytes in packets (default:56)
-\&        \-I IFACE/IP     Use interface or IP address as source
 \&        \-q              Quiet, only display output at start
 \&                        and when finished
 \&        \-p              Pattern to use for payload
@@ -1214,7 +1191,7 @@ Edit kernel routing tables
 .Vb 3
 \&        \-n      Don\*(Aqt resolve names
 \&        \-e      Display other/more information
-\&        \-A inet{6}      Select address family
+\&        \-A inet Select address family
 .Ve
 .IP \fBsed\fR 4
 .IX Item "sed"
@@ -1511,14 +1488,13 @@ Translate, squeeze, or delete characters from stdin, writing to stdout
 .Ve
 .IP \fBtraceroute\fR 4
 .IX Item "traceroute"
-traceroute [\-46FIlnrv] [\-f 1ST_TTL] [\-m MAXTTL] [\-q PROBES] [\-p PORT]
+traceroute [\-FIlnrv] [\-f 1ST_TTL] [\-m MAXTTL] [\-q PROBES] [\-p PORT]
 	[\-t TOS] [\-w WAIT_SEC] [\-s SRC_IP] [\-i IFACE]
 	[\-z PAUSE_MSEC] HOST [BYTES]
 .Sp
 Trace the route to HOST
 .Sp
 .Vb 10
-\&        \-4,\-6   Force IP or IPv6 name resolution
 \&        \-F      Set don\*(Aqt fragment bit
 \&        \-I      Use ICMP ECHO instead of UDP datagrams
 \&        \-l      Display TTL value of the returned packet
@@ -1535,27 +1511,6 @@ Trace the route to HOST
 \&        \-t N    Type\-of\-service in probe packets (default 0)
 \&        \-w SEC  Time to wait for a response (default 3)
 \&        \-g IP   Loose source route gateway (8 max)
-.Ve
-.IP \fBtraceroute6\fR 4
-.IX Item "traceroute6"
-traceroute6 [\-nrv] [\-m MAXTTL] [\-q PROBES] [\-p PORT]
-	[\-t TOS] [\-w WAIT_SEC] [\-s SRC_IP] [\-i IFACE]
-	HOST [BYTES]
-.Sp
-Trace the route to HOST
-.Sp
-.Vb 11
-\&        \-n      Print numeric addresses
-\&        \-r      Bypass routing tables, send directly to HOST
-\&        \-v      Verbose
-\&        \-m N    Max number of hops
-\&        \-q N    Number of probes per hop (default 3)
-\&        \-p N    Base UDP port number used in probes
-\&                (default 33434)
-\&        \-s IP   Source address
-\&        \-i IFACE Source interface
-\&        \-t N    Type\-of\-service in probe packets (default 0)
-\&        \-w SEC  Time wait for a response (default 3)
 .Ve
 .IP \fBudhcpc\fR 4
 .IX Item "udhcpc"

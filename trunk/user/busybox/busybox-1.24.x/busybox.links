@@ -21,7 +21,6 @@
 /sbin/modprobe
 /sbin/rmmod
 /bin/ping
-/bin/ping6
 /usr/bin/wget
 /usr/bin/lsof
 /bin/ash
@@ -48,7 +47,6 @@
 /usr/bin/cut
 /bin/dd
 /bin/df
-/sbin/dhcp6c
 /usr/bin/dirname
 /bin/dmesg
 /bin/dnsdomainname
@@ -65,6 +63,7 @@
 /usr/bin/head
 /bin/hostname
 /sbin/ifconfig
+/sbin/ip
 /bin/kill
 /usr/bin/killall
 /sbin/klogd
@@ -106,7 +105,6 @@
 /usr/bin/time
 /usr/bin/tr
 /usr/bin/traceroute
-/usr/bin/traceroute6
 /bin/true
 /sbin/udhcpc
 /bin/umount

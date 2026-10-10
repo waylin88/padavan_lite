@@ -240,20 +240,20 @@ if [ -n "$CONFIG_RTC_CLASS" ] ; then
 	func_enable_busybox_param "CONFIG_HWCLOCK"
 fi
 ############################# IPV6 ####################################
-if [ "$CONFIG_FIRMWARE_ENABLE_IPV6" != "y" ] ; then
-	func_disable_kernel_param "CONFIG_INET_TUNNEL"
-	func_disable_kernel_param "CONFIG_IPV6"
-	func_disable_busybox_param "CONFIG_PING6"
-	func_disable_busybox_param "CONFIG_FEATURE_IPV6"
-	func_disable_busybox_param "CONFIG_FEATURE_PREFER_IPV4_ADDRESS"
-	func_disable_busybox_param "CONFIG_TRACEROUTE6"
-	func_disable_busybox_param "CONFIG_FEATURE_UDHCP_RFC5969"
-	func_disable_busybox_param "CONFIG_DHCP6C"
-	func_enable_busybox_param "CONFIG_IP"
-	func_enable_busybox_param "CONFIG_FEATURE_IP_ADDRESS"
-	func_enable_busybox_param "CONFIG_FEATURE_IP_LINK"
-	func_enable_busybox_param "CONFIG_FEATURE_IP_ROUTE"
-fi
+# 本源码定位为打印机服务器，只用 IPv4，固定关闭内核 IPv6 协议栈与
+# busybox 的 IPv6 相关小程序（机型模板里的 CONFIG_FIRMWARE_ENABLE_IPV6 不再生效）。
+func_disable_kernel_param "CONFIG_INET_TUNNEL"
+func_disable_kernel_param "CONFIG_IPV6"
+func_disable_busybox_param "CONFIG_PING6"
+func_disable_busybox_param "CONFIG_FEATURE_IPV6"
+func_disable_busybox_param "CONFIG_FEATURE_PREFER_IPV4_ADDRESS"
+func_disable_busybox_param "CONFIG_TRACEROUTE6"
+func_disable_busybox_param "CONFIG_FEATURE_UDHCP_RFC5969"
+func_disable_busybox_param "CONFIG_DHCP6C"
+func_enable_busybox_param "CONFIG_IP"
+func_enable_busybox_param "CONFIG_FEATURE_IP_ADDRESS"
+func_enable_busybox_param "CONFIG_FEATURE_IP_LINK"
+func_enable_busybox_param "CONFIG_FEATURE_IP_ROUTE"
 ############################# USB #####################################
 if [ "$CONFIG_FIRMWARE_ENABLE_USB" != "y" ] || [ -z "$CONFIG_USB_SUPPORT" ] ; then
 	func_disable_kernel_param "CONFIG_SWAP"
