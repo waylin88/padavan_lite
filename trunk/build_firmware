@@ -370,6 +370,36 @@ if [ "$CONFIG_FIRMWARE_INCLUDE_SERIAL" != "y" ] ; then
 	func_disable_kernel_param "CONFIG_USB_SERIAL_CH341"
 	func_disable_kernel_param "CONFIG_USB_SERIAL_PL2303"
 fi
+############################# 打印机服务器裁剪 #########################
+# 本源码定位为打印机服务器：去掉 4G/上网卡、USB 存储/CD、VoIP 穿透 ALG，
+# 保留 USB 打印（CONFIG_USB_PRINTER）与 USB 主机控制器。
+# 4G / USB 上网卡
+func_disable_kernel_param "CONFIG_USB_SERIAL"
+func_disable_kernel_param "CONFIG_USB_SERIAL_GENERIC"
+func_disable_kernel_param "CONFIG_USB_SERIAL_QUALCOMM"
+func_disable_kernel_param "CONFIG_USB_SERIAL_SIERRAWIRELESS"
+func_disable_kernel_param "CONFIG_USB_SERIAL_WWAN"
+func_disable_kernel_param "CONFIG_USB_SERIAL_OPTION"
+func_disable_kernel_param "CONFIG_USB_ACM"
+func_disable_kernel_param "CONFIG_USB_WDM"
+func_disable_kernel_param "CONFIG_USB_USBNET"
+func_disable_kernel_param "CONFIG_USB_NET_CDCETHER"
+func_disable_kernel_param "CONFIG_USB_NET_CDC_NCM"
+func_disable_kernel_param "CONFIG_USB_NET_HUAWEI_CDC_NCM"
+func_disable_kernel_param "CONFIG_USB_NET_CDC_MBIM"
+func_disable_kernel_param "CONFIG_USB_NET_RNDIS_HOST"
+func_disable_kernel_param "CONFIG_USB_NET_QMI_WWAN"
+func_disable_kernel_param "CONFIG_USB_SIERRA_NET"
+# USB 存储 / 光驱
+func_disable_kernel_param "CONFIG_USB_STORAGE"
+func_disable_kernel_param "CONFIG_BLK_DEV_SR"
+# VoIP 穿透 ALG（SIP / H.323 / RTSP）
+func_disable_kernel_param "CONFIG_NF_CONNTRACK_H323"
+func_disable_kernel_param "CONFIG_NF_CONNTRACK_SIP"
+func_disable_kernel_param "CONFIG_NF_CONNTRACK_RTSP"
+func_disable_kernel_param "CONFIG_NF_NAT_H323"
+func_disable_kernel_param "CONFIG_NF_NAT_SIP"
+func_disable_kernel_param "CONFIG_NF_NAT_RTSP"
 fi
 ############################# XFRM ####################################
 if [ "$CONFIG_FIRMWARE_INCLUDE_SSWAN" = "y" ] ; then
