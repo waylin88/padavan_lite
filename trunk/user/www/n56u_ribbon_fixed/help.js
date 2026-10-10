@@ -106,7 +106,7 @@ helpcontent[14] = new Array("",
 //AiDisk Wizard
 helpcontent[15] = new Array("",
 				"<#AiDisk_moreconfig#>",
-				"<#AiDisk_Step1_help#><p><a href='../Advanced_AiDisk_ftp.asp' target='_parent' hidefocus='true'><#MoreConfig#></a></p><!--span style='color:#CC0000'><#AiDisk_Step1_help2#></span-->",
+				"<#AiDisk_Step1_help#>",
 				"<#AiDisk_Step2_help#>",
 				"<#AiDisk_Step3_help#>");
 //EzQoS

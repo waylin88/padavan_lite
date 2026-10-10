@@ -55,8 +55,7 @@ function initial(){
 		$("unmounted_refresh").style.display = "";
 	}
 
-	if(sw_mode == '3')
-		$("aidisk_hyperlink").style.display = "none";
+	$("aidisk_hyperlink").style.display = "none";
 
 	var TotalSize = parent.getDiskTotalSize(diskOrder);
 	var alertPercentbar = 'progress-info';
