@@ -390,9 +390,9 @@ func_disable_kernel_param "CONFIG_USB_NET_CDC_MBIM"
 func_disable_kernel_param "CONFIG_USB_NET_RNDIS_HOST"
 func_disable_kernel_param "CONFIG_USB_NET_QMI_WWAN"
 func_disable_kernel_param "CONFIG_USB_SIERRA_NET"
-# USB 存储 / 光驱
-func_disable_kernel_param "CONFIG_USB_STORAGE"
-func_disable_kernel_param "CONFIG_BLK_DEV_SR"
+# USB 存储 / 光驱：必须保留。usb-storage 不仅用于 U 盘，
+# 也是部分打印机（ZERO-CD / 复合设备）被正确枚举识别所必需的，
+# 之前误删会导致插 USB 设备时系统完全不识别。
 # VoIP 穿透 ALG（SIP / H.323 / RTSP）
 func_disable_kernel_param "CONFIG_NF_CONNTRACK_H323"
 func_disable_kernel_param "CONFIG_NF_CONNTRACK_SIP"
