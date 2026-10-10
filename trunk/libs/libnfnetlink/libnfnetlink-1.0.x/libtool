@@ -2,7 +2,7 @@
 
 # libtool - Provide generalized library-building support services.
 # Generated automatically by config.status (libnfnetlink) 1.0.1
-# Libtool was configured on host all-in-one-72-8dqnx:
+# Libtool was configured on host all-in-one-72-b9bqf:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 #
 #   Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005,
@@ -275,7 +275,7 @@ hardcode_into_libs=yes
 sys_lib_search_path_spec="/workspace/toolchain-mipsel/toolchain-3.4.x/lib/gcc/mipsel-linux-uclibc/7.4.0 /workspace/toolchain-mipsel/toolchain-3.4.x/lib/gcc /workspace/toolchain-mipsel/toolchain-3.4.x/mipsel-linux-uclibc/lib /workspace/toolchain-mipsel/toolchain-3.4.x/mipsel-linux-uclibc/sysroot/lib /workspace/toolchain-mipsel/toolchain-3.4.x/mipsel-linux-uclibc/sysroot/usr/lib "
 
 # Run-time system search path for libraries.
-sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/local/lib /usr/local/lib/x86_64-linux-gnu /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu /lib32 /usr/lib32 "
+sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/local/lib /usr/local/lib/x86_64-linux-gnu /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu "
 
 # Whether dlopen is supported.
 dlopen_support=unknown

@@ -16,6 +16,14 @@ include $(ARCH_CONFIG)
 
 INSTALLDIR = $(ROOTDIR)/romfs
 
+STORAGE_ENABLED=n
+ifdef CONFIG_MMC_BLOCK
+STORAGE_ENABLED=y
+endif
+ifdef CONFIG_BLK_DEV_SD
+STORAGE_ENABLED=y
+endif
+
 dir_y =
 dir_n =
 dir_  =
@@ -27,6 +35,7 @@ dir_y						+= iproute2
 dir_y						+= wireless_tools
 dir_y						+= wpa_supplicant
 dir_y						+= shared
+dir_$(STORAGE_ENABLED)				+= libdisk
 dir_y						+= nvram
 dir_y						+= mtd_write
 dir_y						+= networkmap

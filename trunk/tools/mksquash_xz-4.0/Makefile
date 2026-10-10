@@ -268,10 +268,17 @@ install: mksquashfs unsquashfs
 	cp unsquashfs $(INSTALL_DIR)/unsquashfs_xz-4.0
 
 .PHONY: xzutils xzutils-configure
-xzutils: $(XZUTILSDIR)/configure $(XZUTILSDIR)/Makefile
+xzutils: $(XZUTILSDIR)/config.status
+	# 归一化 autotools 生成物时间戳，使 make 不再尝试重新生成
+	# aclocal.m4 / configure / Makefile.in / config.h（构建机通常没有 automake，
+	# 且重跑 autoconf 会覆盖已生成好的 config.h）
+	touch $(XZUTILSDIR)/aclocal.m4 $(XZUTILSDIR)/configure \
+		$(XZUTILSDIR)/config.h.in $(XZUTILSDIR)/Makefile.in \
+		$(XZUTILSDIR)/Makefile $(XZUTILSDIR)/config.h $(XZUTILSDIR)/config.status
 	$(MAKE) -C $(XZUTILSDIR)
 
-$(XZUTILSDIR)/Makefile:
+# config.status 被 .gitignore 忽略，全新检出时不存在，需先配置一次
+$(XZUTILSDIR)/config.status:
 	$(MAKE) xzutils-configure
 
 $(XZUTILSDIR)/configure:
@@ -279,6 +286,15 @@ $(XZUTILSDIR)/configure:
 
 xzutils-configure:
 	( cd $(XZUTILSDIR) ; \
+		ac_cv_header_sha256_h=no \
+		ac_cv_header_sha2_h=no \
+		ac_cv_header_minix_sha2_h=no \
+		ac_cv_func_SHA256_Init=no \
+		ac_cv_func_SHA256Init=no \
+		ac_cv_func_CC_SHA256_Init=no \
+		ac_cv_type_SHA256_CTX=no \
+		ac_cv_type_CC_SHA256_CTX=no \
+		ac_cv_type_SHA2_CTX=no \
 		./configure \
 		--prefix=/usr/local \
 	)
